@@ -2,7 +2,7 @@
 use strict;
 use warnings;
 
-
+use 5.008;
 
 use ExtUtils::MakeMaker 6.30;
 
@@ -21,7 +21,7 @@ my %WriteMakefileArgs = (
   "NAME" => "Sort::Hash",
   "PREREQ_PM" => {},
   "TEST_REQUIRES" => {},
-  "VERSION" => "1.00",
+  "VERSION" => "1.01",
   "test" => {
     "TESTS" => "t/*.t"
   }

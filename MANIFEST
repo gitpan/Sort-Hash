@@ -1,3 +1,4 @@
+Changes
 LICENSE
 MANIFEST
 META.yml
@@ -6,5 +7,4 @@ READ.ME
 README
 dist.ini
 lib/Sort/Hash.pm
-pod2htmd.tmp
 t/sort_hash.t

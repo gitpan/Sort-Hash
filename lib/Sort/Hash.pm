@@ -4,7 +4,7 @@ package Sort::Hash;
 use Exporter 'import';    # gives you Exporter's import() method directly
 our @EXPORT = qw( sort_hash );    # symbols to export on request
 
-our $VERSION = '1.00';
+our $VERSION = '1.01';
 
 # ABSTRACT: Hash Sorting.
 
@@ -14,7 +14,7 @@ Sort::Hash
 
 =head1 VERSION 
 
-1.00
+1.01
 
 =head1 SYNOPSIS
 
@@ -25,6 +25,11 @@ the sort may be either Ascending or Descending.
 
   use Sort::Hash;
   my @sorted = sort_hash( %some_hash );
+  
+This does exactly the same as:
+  my @sorted = ();
+  foreach my $name 
+     ( sort { $H{$a} <=> $H{$b} } keys  %some_hash ) { push @sorted, $name; } 
   
 =head1 Description  
   
@@ -40,10 +45,14 @@ Return a sorted array containing the keys of a hash.
     numeric   => 1, # sort as numbers.
     hashref   => $hashref , # pass a hashref instead of a hash.
     );
+    
+
 
 Arguments are passed in with the hash, keys matching argument
 names will be interpreted as arguments. To avoid this use a 
 hashref instead.  
+
+
 
 =cut
 
