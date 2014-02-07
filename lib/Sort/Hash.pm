@@ -1,10 +1,14 @@
-use warnings;
-use strict;
 package Sort::Hash;
 use Exporter 'import';    # gives you Exporter's import() method directly
+use Try::Tiny '0.13';
+use Scalar::Util '1.24';
+use strict;
+use warnings FATAL => 'all';
+
 our @EXPORT = qw( sort_hash );    # symbols to export on request
 
-our $VERSION = '1.01';
+
+our $VERSION = '1.02';
 
 # ABSTRACT: Hash Sorting.
 
@@ -14,7 +18,7 @@ Sort::Hash
 
 =head1 VERSION 
 
-1.01
+1.02
 
 =head1 SYNOPSIS
 
@@ -27,9 +31,7 @@ the sort may be either Ascending or Descending.
   my @sorted = sort_hash( %some_hash );
   
 This does exactly the same as:
-  my @sorted = ();
-  foreach my $name 
-     ( sort { $H{$a} <=> $H{$b} } keys  %some_hash ) { push @sorted, $name; } 
+  my @sorted = ( sort { $H{$a} <=> $H{$b} } keys  %some_hash ) ;
   
 =head1 Description  
   
@@ -40,38 +42,52 @@ A single method B<sort_hash> is exported.
 Return a sorted array containing the keys of a hash.
 
  my @sorted = sort_hash( 
-    direction => 'desc' , # default is asc
-    alpha     => 1 , # Sort alpha, default is numeric
-    numeric   => 1, # sort as numbers.
-    hashref   => $hashref , # pass a hashref instead of a hash.
+    direction   => 'desc' , # default is asc
+    alpha       => 1 , # Sort alpha, will sort numbers as text
+    strictalpha => 1, # refuse to sort numbers as text. implies alpha
+    numeric     => 1, # sort as numbers, default is numeric
+    hashref     => $hashref , # pass a hashref instead of a hash.
     );
-    
-
 
 Arguments are passed in with the hash, keys matching argument
-names will be interpreted as arguments. To avoid this use a 
-hashref instead.  
+names will be interpreted as arguments. To avoid this use a  
+hashref instead.
 
+=head2 Errors
 
+Numeric sorts will fail if given a non-number. Normally alpha sorts will
+treat numbers as text. strictalpha uses Scalar::Util::looks_like_number 
+to reject a hash that has any values that appear to be numbers.
+
+When a sort fails undef is returned and a warning emitted.
 
 =cut
 
 sub sort_hash {
     my %H      = @_;
     my @sorted = ();
-    my $direction = delete $H{direction} || 'asc';
-    my $alpha     = delete $H{alpha}     || 0;
-    my $numeric   = delete $H{numeric}   || 1;
+    my $direction   = delete $H{direction}   || 'asc';
+    my $alpha       = delete $H{alpha}       || 0;
+    my $strictalpha = delete $H{strictalpha} || 0;
+    my $numeric     = delete $H{numeric}     || 1;
     if ( defined $H{hashref} ) { %H = %{ $H{hashref} } }
+    if ($strictalpha) { 
+        $alpha = 1;
+        for ( values %H ) {
+            if (Scalar::Util::looks_like_number($_)) {
+                warn 'Attempt to Sort Numeric Value in Strict Alpha Sort';
+                return undef }
+            }
+        }
     if ($alpha) {
-        foreach my $name ( sort { lc $H{$a} cmp lc $H{$b} } keys %H ) {
-            push @sorted, $name;    }
+        @sorted = ( sort { lc $H{$a} cmp lc $H{$b} } keys %H ) ;
         }
     else {
-        foreach my $name ( sort { $H{$a} <=> $H{$b} } keys %H ) {
-            push @sorted, $name;
+        try { @sorted = ( sort { $H{$a} <=> $H{$b} } keys %H ) ;}
+        catch { 
+            warn 'Attempt to Sort non-Numeric values in a Numeric Sort';
+            return undef ; }
         }
-    }
     if ( lc($direction) eq 'desc' ) {
         return reverse @sorted;
     }
@@ -93,7 +109,8 @@ your bug as I make changes.
 
 You can find documentation for this module with the perldoc command.
 
-You can also look for information at:
+You can also look for information at: The documentation for the 
+sort command in the Perl documentation.
 
 =head1 LICENSE AND COPYRIGHT
 

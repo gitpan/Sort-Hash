@@ -2,7 +2,9 @@
 abstract: 'Hash Sorting.'
 author:
   - 'John Karr <brainbuz@brainbuz.org>'
-build_requires: {}
+build_requires:
+  Test::More: 0
+  Test::Warn: 0
 configure_requires:
   ExtUtils::MakeMaker: 6.30
 dynamic_config: 0
@@ -13,5 +15,10 @@ meta-spec:
   version: 1.4
 name: Sort-Hash
 requires:
+  Exporter: 0
+  Scalar::Util: 0
+  Try::Tiny: 0
   perl: 5.008
-version: 1.01
+  strict: 0
+  warnings: 0
+version: 1.02
