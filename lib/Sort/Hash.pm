@@ -1,14 +1,13 @@
 package Sort::Hash;
 use Exporter 'import';    # gives you Exporter's import() method directly
-use Try::Tiny '0.13';
-use Scalar::Util '1.24';
+use Try::Tiny 0.13;
+use Scalar::Util 1.24;
 use strict;
 use warnings FATAL => 'all';
 
 our @EXPORT = qw( sort_hash );    # symbols to export on request
 
-
-our $VERSION = '1.02';
+our $VERSION = '1.03';
 
 # ABSTRACT: Hash Sorting.
 
@@ -18,7 +17,7 @@ Sort::Hash
 
 =head1 VERSION 
 
-1.02
+1.03
 
 =head1 SYNOPSIS
 

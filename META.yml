@@ -8,7 +8,7 @@ build_requires:
 configure_requires:
   ExtUtils::MakeMaker: 6.30
 dynamic_config: 0
-generated_by: 'Dist::Zilla version 5.006, CPAN::Meta::Converter version 2.132830'
+generated_by: 'Dist::Zilla version 5.012, CPAN::Meta::Converter version 2.132830'
 license: gpl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -16,9 +16,9 @@ meta-spec:
 name: Sort-Hash
 requires:
   Exporter: 0
-  Scalar::Util: 0
-  Try::Tiny: 0
+  Scalar::Util: 1.24
+  Try::Tiny: 0.13
   perl: 5.008
   strict: 0
   warnings: 0
-version: 1.02
+version: 1.03
