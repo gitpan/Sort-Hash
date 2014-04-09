@@ -15,7 +15,7 @@ Sort::Hash get the keys to a hashref sorted by their values
 
 =head1 VERSION 
 
-1.03
+1.04
 
 =head1 SYNOPSIS
 
@@ -28,7 +28,7 @@ the sort may be either Ascending or Descending.
   my @sorted = sort_hash( %some_hash );
   
 This does exactly the same as:
-  my @sorted = ( sort { $H{$a} <=> $H{$b} } keys  %some_hash ) ;
+  my @sorted = ( sort { $H{$a} <=> $H{$b} } keys  %H ) ;
   
 =head1 Description  
   
