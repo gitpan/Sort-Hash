@@ -8,4 +8,5 @@ READ.ME
 README
 dist.ini
 lib/Sort/Hash.pm
+t/bad.t
 t/sort_hash.t

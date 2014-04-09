@@ -1,7 +1,9 @@
 Revision history for Sort::Hash
 
+1.04    9 April 2014
+        Minor Doc fix to improve CPANTS Kwalitee.
 1.03    8 February 2014
-	Fixed error in MakeFile to specify minimum pre-reqs.
+        Fixed error in MakeFile to specify minimum pre-reqs.
 1.02    7 February 2014
         attempting to numeric sort an alpha value warns and returns undef.
         added alphastrict to reject alpha sort with numeric values.

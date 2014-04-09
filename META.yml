@@ -1,5 +1,5 @@
 ---
-abstract: 'Hash Sorting.'
+abstract: 'Suite 330, Boston, MA 02111-1307, USA.'
 author:
   - 'John Karr <brainbuz@brainbuz.org>'
 build_requires:
@@ -21,4 +21,4 @@ requires:
   perl: 5.008
   strict: 0
   warnings: 0
-version: 1.03
+version: 1.04

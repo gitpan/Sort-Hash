@@ -7,13 +7,11 @@ use warnings FATAL => 'all';
 
 our @EXPORT = qw( sort_hash );    # symbols to export on request
 
-our $VERSION = '1.03';
-
-# ABSTRACT: Hash Sorting.
+our $VERSION = '1.04';
 
 =head1 NAME
 
-Sort::Hash
+Sort::Hash get the keys to a hashref sorted by their values
 
 =head1 VERSION 
 
