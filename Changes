@@ -1,8 +1,11 @@
 Revision history for Sort::Hash
 
+1.05    12 July 2014
+		Added Fatal switch to enable choice of dying or warning.
+		When fatal is off a failed sort returns an empty set.
 1.04    9 April 2014
         Minor Doc fix to improve CPANTS Kwalitee.
-	1.041 fixed version number in POD.
+	    1.041 fixed version number in POD.
 1.03    8 February 2014
         Fixed error in MakeFile to specify minimum pre-reqs.
 1.02    7 February 2014

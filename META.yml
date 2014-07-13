@@ -1,24 +1,28 @@
 ---
-abstract: 'Suite 330, Boston, MA 02111-1307, USA.'
+abstract: 'Sort the keys of a Hash into an Array without having to read the perldoc for sort!'
 author:
   - 'John Karr <brainbuz@brainbuz.org>'
 build_requires:
-  Test::More: 0
-  Test::Warn: 0
+  Carp::Always: '0'
+  Test::Exception: '0'
+  Test::More: '0'
+  Test::Warn: '0'
+  Test::Warnings: '0'
+  perl: '5.008'
 configure_requires:
-  ExtUtils::MakeMaker: 6.30
+  ExtUtils::MakeMaker: '6.30'
 dynamic_config: 0
-generated_by: 'Dist::Zilla version 5.012, CPAN::Meta::Converter version 2.132830'
+generated_by: 'Dist::Zilla version 5.019, CPAN::Meta::Converter version 2.141520'
 license: gpl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
-  version: 1.4
+  version: '1.4'
 name: Sort-Hash
 requires:
-  Exporter: 0
-  Scalar::Util: 1.24
-  Try::Tiny: 0.13
-  perl: 5.008
-  strict: 0
-  warnings: 0
-version: 1.041
+  Exporter: '0'
+  Scalar::Util: '1.24'
+  Try::Tiny: '0.13'
+  perl: '5.008'
+  strict: '0'
+  warnings: '0'
+version: '2.00'

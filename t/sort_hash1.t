@@ -1,7 +1,7 @@
 use Test::More ;#tests => 8;
 use Test::Warn;
 
-BEGIN { use_ok(Sort::Hash); }
+BEGIN { use_ok(Sort::Hash1); }
 
 my %AlphaHash = (
     utopians    => 'transferrer',

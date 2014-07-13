@@ -1,21 +1,25 @@
-package Sort::Hash;
-use Exporter 'import';    # gives you Exporter's import() method directly
-use Try::Tiny 0.13;
-use Scalar::Util 1.24;
 use strict;
 use warnings FATAL => 'all';
 
+package Sort::Hash;
+$Sort::Hash::VERSION = '2.00'; # TRIAL
+use Exporter 'import';
+use Try::Tiny 0.13;
+use Scalar::Util 1.24;
+
 our @EXPORT = qw( sort_hash );    # symbols to export on request
 
-our $VERSION = '1.04';
+# ABSTRACT: Sort the keys of a Hash into an Array without having to read the perldoc for sort!
+
+=pod
 
 =head1 NAME
 
 Sort::Hash get the keys to a hashref sorted by their values
 
-=head1 VERSION 
+=head1 VERSION
 
-1.04
+version 2.00
 
 =head1 SYNOPSIS
 
@@ -25,10 +29,11 @@ as a hashref, numeric and alphanumeric sorting are supported,
 the sort may be either Ascending or Descending. 
 
   use Sort::Hash;
-  my @sorted = sort_hash( %some_hash );
+  my @sorted = sort_hash( \%Hash );
   
-This does exactly the same as:
-  my @sorted = ( sort { $H{$a} <=> $H{$b} } keys  %H ) ;
+This does exactly the same as: 
+
+ my @sorted = ( sort { $Hash{$a} E<lt>=E<gt> $Hash{$b} } keys %Hash ) ;
   
 =head1 Description  
   
@@ -38,17 +43,23 @@ A single method B<sort_hash> is exported.
 
 Return a sorted array containing the keys of a hash.
 
- my @sorted = sort_hash( 
-    direction   => 'desc' , # default is asc
-    alpha       => 1 , # Sort alpha, will sort numbers as text
-    strictalpha => 1, # refuse to sort numbers as text. implies alpha
-    numeric     => 1, # sort as numbers, default is numeric
-    hashref     => $hashref , # pass a hashref instead of a hash.
-    );
+=head3 Options to sort_hash
 
-Arguments are passed in with the hash, keys matching argument
-names will be interpreted as arguments. To avoid this use a  
-hashref instead.
+    nofatal      warn and return nothing instead of dying on
+                 invalid sort
+    silent       like nofatal but doesn't emit warnings either
+    noempty      if the hashref is empty treat it as an error
+                 normally nothing would be returned
+    desc         sort descending instead of ascending
+    asc          ascending sort is the default but you can specify it
+    alpha        sort alpha (treats numbers as text)
+    strictalpha  sort alpha but refuse to sort numbers as text
+    numeric      sort as numbers, default is numeric
+
+The first argument is the hashref to be sorted, followed by the arguments.
+
+ sort_hash( $hashref, 'strictalpha', 'desc' );
+ sort_hash( $hashref, qw/noempty nofatal alpha desc/);
 
 =head2 Errors
 
@@ -56,40 +67,70 @@ Numeric sorts will fail if given a non-number. Normally alpha sorts will
 treat numbers as text. strictalpha uses Scalar::Util::looks_like_number 
 to reject a hash that has any values that appear to be numbers.
 
-When a sort fails undef is returned and a warning emitted.
+When the data is illegal for the sort type in effect, (only alpha has no restriction) sort_hash will die. If you prefer it not to, use nofatal to return () and warn instead of die, silent (implies nofatal) will just return () without a warning. 
+
+Sorting an empty hashref will return nothing (). You can make this into an error that will die or warn depending on the nofatal flag with noempty.
 
 =cut
 
 sub sort_hash {
-    my %H      = @_;
     my @sorted = ();
-    my $direction   = delete $H{direction}   || 'asc';
-    my $alpha       = delete $H{alpha}       || 0;
-    my $strictalpha = delete $H{strictalpha} || 0;
-    my $numeric     = delete $H{numeric}     || 1;
-    if ( defined $H{hashref} ) { %H = %{ $H{hashref} } }
-    if ($strictalpha) { 
-        $alpha = 1;
-        for ( values %H ) {
-            if (Scalar::Util::looks_like_number($_)) {
-                warn 'Attempt to Sort Numeric Value in Strict Alpha Sort';
-                return undef }
+    my $H      = shift;
+    my ( $silent, $nofatal, $noempty, $desc, $alpha, $strictalpha ) = 0;
+    my ( $numeric, $asc ) = 1;
+    for (@_) {
+        if ( $_ eq 'nofatal' ) { $nofatal = 1 }
+        if ( $_ eq 'silent' )  { $silent  = 1; $nofatal = 1 }
+        if ( $_ eq 'noempty' ) { $noempty = 1 }
+        if ( $_ eq 'desc' )    { $desc    = 1; $asc = 0 }
+        if ( $_ eq 'asc' )     { $asc     = 1; $desc = 0 }
+        if ( $_ eq 'alpha' )   { $alpha   = 1; $numeric = 0; }
+        if ( $_ eq 'strictalpha' ) {
+            $strictalpha = 1;
+            $alpha       = 1;
+            $numeric     = 0;
+        }
+        if ( $_ eq 'numeric' ) { $strictalpha = 0; $alpha = 0; $numeric = 1; }
+    }
+
+    my $death = sub {
+        if ($nofatal) { warn $_[0] unless $silent; return (); }
+        else          { die $_[0]; }
+    };
+    if ($noempty) {
+        unless ( scalar( keys %$H ) ) {
+            $death->(
+                'Attempt to sort an empty hash while noempty is in effect');
+        }
+    }
+    if ($strictalpha) {
+        for ( values %$H ) {
+            if ( Scalar::Util::looks_like_number($_) ) {
+                $death->(
+                    'Attempt to Sort Numeric Value in Strict Alpha Sort');
+                return undef;
             }
         }
+    }
     if ($alpha) {
-        @sorted = ( sort { lc $H{$a} cmp lc $H{$b} } keys %H ) ;
-        }
+        @sorted = ( sort { lc $H->{$a} cmp lc $H->{$b} } keys %$H );
+    }
     else {
-        try { @sorted = ( sort { $H{$a} <=> $H{$b} } keys %H ) ;}
-        catch { 
-            warn 'Attempt to Sort non-Numeric values in a Numeric Sort';
-            return undef ; }
+        try {
+            @sorted = ( sort { $H->{$a} <=> $H->{$b} } keys %$H );
         }
-    if ( lc($direction) eq 'desc' ) {
+        catch {
+            $death->('Attempt to Sort non-Numeric values in a Numeric Sort');
+            return undef;
+        }
+    }
+    if ( $desc ) {
         return reverse @sorted;
     }
     else { return @sorted; }
 }
+
+=pod
 
 =head1 AUTHOR
 
