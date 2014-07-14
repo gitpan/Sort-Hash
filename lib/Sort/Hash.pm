@@ -2,7 +2,7 @@ use strict;
 use warnings FATAL => 'all';
 
 package Sort::Hash;
-$Sort::Hash::VERSION = '2.00'; # TRIAL
+$Sort::Hash::VERSION = '2.00';
 use Exporter 'import';
 use Try::Tiny 0.13;
 use Scalar::Util 1.24;
@@ -45,21 +45,21 @@ Return a sorted array containing the keys of a hash.
 
 =head3 Options to sort_hash
 
-    nofatal      warn and return nothing instead of dying on
+    nofatal      warn and return an emppty list instead of dying on
                  invalid sort
     silent       like nofatal but doesn't emit warnings either
     noempty      if the hashref is empty treat it as an error
-                 normally nothing would be returned
+                 instead of returning an empty list ().
     desc         sort descending instead of ascending
     asc          ascending sort is the default but you can specify it
     alpha        sort alpha (treats numbers as text)
     strictalpha  sort alpha but refuse to sort numbers as text
     numeric      sort as numbers, default is numeric
 
-The first argument is the hashref to be sorted, followed by the arguments.
+The first argument is the hashref to be sorted, followed by the arguments which may be in any order.
 
  sort_hash( $hashref, 'strictalpha', 'desc' );
- sort_hash( $hashref, qw/noempty nofatal alpha desc/);
+ sort_hash( $hashref, qw/ noempty nofatal alpha desc /);
 
 =head2 Errors
 
@@ -70,6 +70,14 @@ to reject a hash that has any values that appear to be numbers.
 When the data is illegal for the sort type in effect, (only alpha has no restriction) sort_hash will die. If you prefer it not to, use nofatal to return () and warn instead of die, silent (implies nofatal) will just return () without a warning. 
 
 Sorting an empty hashref will return nothing (). You can make this into an error that will die or warn depending on the nofatal flag with noempty.
+
+=head1 Changes from Version 1.x to 2.x
+
+The API has been changed from version 1. When looking back at sort_hash I decided that I didn't like a number of things about it, I even ended up agreeing with a complaint from PerlCritic! 
+
+=head2 If you need version1 compatibility
+
+Version 1 is included in the version 2 distribution, renamed as Sort::Hash1, just change your use statement to C<use Sort::Hash1;>.
 
 =cut
 
