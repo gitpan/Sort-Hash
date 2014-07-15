@@ -2,7 +2,7 @@ use strict;
 use warnings FATAL => 'all';
 
 package Sort::Hash;
-$Sort::Hash::VERSION = '2.00';
+$Sort::Hash::VERSION = '2.01';
 use Exporter 'import';
 use Try::Tiny 0.13;
 use Scalar::Util 1.24;
@@ -19,7 +19,7 @@ Sort::Hash get the keys to a hashref sorted by their values
 
 =head1 VERSION
 
-version 2.00
+version 2.01
 
 =head1 SYNOPSIS
 
@@ -35,10 +35,10 @@ This does exactly the same as:
 
  my @sorted = ( sort { $Hash{$a} E<lt>=E<gt> $Hash{$b} } keys %Hash ) ;
   
-=head1 Description  
-  
-A single method B<sort_hash> is exported.  
-  
+=head1 DESCRIPTION 
+
+Sort the keys of a Hash into an Array without having to read the perldoc for sort! 
+   
 =head2 sort_hash 
 
 Return a sorted array containing the keys of a hash.

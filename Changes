@@ -1,5 +1,9 @@
 Revision history for Sort::Hash
 
+2.01    15 July 2014
+	Fixed a minor pod error
+2.00    14 July 2014
+	Rewrote interface
 1.05    12 July 2014
 		Added Fatal switch to enable choice of dying or warning.
 		When fatal is off a failed sort returns an empty set.
