@@ -1,7 +1,7 @@
 
 
 This archive contains the distribution Sort-Hash,
-version 2.01:
+version 2.02:
 
   Sort the keys of a Hash into an Array without having to read the perldoc for sort!
 

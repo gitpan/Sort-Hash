@@ -2,7 +2,7 @@ use strict;
 use warnings FATAL => 'all';
 
 package Sort::Hash;
-$Sort::Hash::VERSION = '2.01';
+$Sort::Hash::VERSION = '2.02';
 use Exporter 'import';
 use Try::Tiny 0.13;
 use Scalar::Util 1.24;
@@ -19,7 +19,7 @@ Sort::Hash get the keys to a hashref sorted by their values
 
 =head1 VERSION
 
-version 2.01
+version 2.02
 
 =head1 SYNOPSIS
 
@@ -33,7 +33,7 @@ the sort may be either Ascending or Descending.
   
 This does exactly the same as: 
 
- my @sorted = ( sort { $Hash{$a} E<lt>=E<gt> $Hash{$b} } keys %Hash ) ;
+ my @sorted = ( sort { $Hash{$a} <=E> $Hash{$b} } keys %Hash ) ;
   
 =head1 DESCRIPTION 
 
