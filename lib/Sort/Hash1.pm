@@ -1,14 +1,14 @@
 package Sort::Hash1;
-$Sort::Hash1::VERSION = '2.02';
-use Exporter 'import';    # gives you Exporter's import() method directly
+{
+  $Sort::Hash1::VERSION = '2.03';
+}
+use Exporter 'import';
 use Try::Tiny 0.13;
 use Scalar::Util 1.24;
 use strict;
 use warnings FATAL => 'all';
 
 our @EXPORT = qw( sort_hash );    # symbols to export on request
-
-# our $VERSION = '1.042';
 
 =head1 NAME
 
@@ -24,7 +24,11 @@ Sort::Hash1 is included in the distribution for backwards compatibility. If you 
 
 =head2 sort_hash
 
-The interface to sort_hash changed completely from version 1 to version 2.
+The interface to sort_hash changed from version 1 to version 2. Instead of taking a hash of values it now takes a list in which the first item must be a reference to the hash to sort. Sort::Hash1 will be removed from the distribution in the future, updating your code is easy:
+
+ sort_hash( desc => 1 , alpha => 1, %somehash );
+ becomes
+ sort_hash( \%somehash, 'desc', 'alpha' );
 
 =cut
 

@@ -3,7 +3,7 @@ use Test::Warn;
 use Test::Warnings;
 use Test::Exception;
 
-use Carp::Always;
+#use Carp::Always;
 
 use 5.008;
 
@@ -125,8 +125,11 @@ warning_is { sort_hash( \%MixedHash, qw /numeric nofatal/ ) }
 # note( q/next two tests will generate a warning by performin an invalid
 # operation while silent is in effect, then test that there was no warning./);
 my @sorted_bad = sort_hash( \%MixedHash, qw /numeric nofatal silent/ );
-is( scalar(@sorted_bad), 0, 'no data was returned' );
-had_no_warnings;
+is( scalar(@sorted_bad), 0, 'no data was returned but silent is on' );
+#had_no_warnings( 'no data was returned but silent is on' );
+warning_is { sort_hash( \%MixedHash, qw /numeric nofatal silent/ ) }
+        undef,
+        'No warning when silent is on' ;
 
 warning_is { sort_hash( \%MixedHash, qw /strictalpha nofatal/ ) }
 'Attempt to Sort Numeric Value in Strict Alpha Sort',

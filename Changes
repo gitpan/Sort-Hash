@@ -1,7 +1,7 @@
 Revision history for Sort::Hash
 
-2.02    15 July 2014
-        Fix another minor pod issue raised by via rtcpan.
+2.02,203    15 July 2014
+        Pod Fixes.
         Remove version number from Sort::Hash1 because Kwalitee didn't like it.
 2.01    15 July 2014
 	Fixed a minor pod error

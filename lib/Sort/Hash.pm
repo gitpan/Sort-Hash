@@ -2,7 +2,9 @@ use strict;
 use warnings FATAL => 'all';
 
 package Sort::Hash;
-$Sort::Hash::VERSION = '2.02';
+{
+  $Sort::Hash::VERSION = '2.03';
+}
 use Exporter 'import';
 use Try::Tiny 0.13;
 use Scalar::Util 1.24;
@@ -15,11 +17,11 @@ our @EXPORT = qw( sort_hash );    # symbols to export on request
 
 =head1 NAME
 
-Sort::Hash get the keys to a hashref sorted by their values
+Sort::Hash - get the keys to a hashref sorted by their values
 
 =head1 VERSION
 
-version 2.02
+version 2.03
 
 =head1 SYNOPSIS
 
@@ -30,15 +32,15 @@ the sort may be either Ascending or Descending.
 
   use Sort::Hash;
   my @sorted = sort_hash( \%Hash );
-  
+
 This does exactly the same as: 
 
- my @sorted = ( sort { $Hash{$a} <=E> $Hash{$b} } keys %Hash ) ;
-  
+ my @sorted = ( sort { $Hash{$a} <=> $Hash{$b} } keys %Hash ) ;
+
 =head1 DESCRIPTION 
 
 Sort the keys of a Hash into an Array without having to read the perldoc for sort! 
-   
+
 =head2 sort_hash 
 
 Return a sorted array containing the keys of a hash.
@@ -112,24 +114,24 @@ sub sort_hash {
         }
     }
     if ($strictalpha) {
-        for ( values %$H ) {
+        for ( values %{$H}) {
             if ( Scalar::Util::looks_like_number($_) ) {
                 $death->(
                     'Attempt to Sort Numeric Value in Strict Alpha Sort');
-                return undef;
+                return ;
             }
         }
     }
     if ($alpha) {
-        @sorted = ( sort { lc $H->{$a} cmp lc $H->{$b} } keys %$H );
+        @sorted = ( sort { lc $H->{$a} cmp lc $H->{$b} } keys %{$H} );
     }
     else {
         try {
-            @sorted = ( sort { $H->{$a} <=> $H->{$b} } keys %$H );
+            @sorted = ( sort { $H->{$a} <=> $H->{$b} } keys %{$H} );
         }
         catch {
             $death->('Attempt to Sort non-Numeric values in a Numeric Sort');
-            return undef;
+            return ;
         }
     }
     if ( $desc ) {
@@ -142,7 +144,7 @@ sub sort_hash {
 
 =head1 AUTHOR
 
-John Karr, C<< <brainbuz at brainbuz.org> >>
+John Karr, C<brainbuz at brainbuz.org>
 
 =head1 BUGS
 
