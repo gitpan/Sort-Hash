@@ -1,5 +1,7 @@
 Revision history for Sort::Hash
 
+2.04	25 July 2014
+	META.yml fix, attempting to prevent indexing of Sort::Hash1.
 2.02,203    15 July 2014
         Pod Fixes.
         Remove version number from Sort::Hash1 because Kwalitee didn't like it.

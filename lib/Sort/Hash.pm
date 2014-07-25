@@ -3,7 +3,7 @@ use warnings FATAL => 'all';
 
 package Sort::Hash;
 {
-  $Sort::Hash::VERSION = '2.03';
+  $Sort::Hash::VERSION = '2.04';
 }
 use Exporter 'import';
 use Try::Tiny 0.13;
@@ -21,7 +21,7 @@ Sort::Hash - get the keys to a hashref sorted by their values
 
 =head1 VERSION
 
-version 2.03
+version 2.04
 
 =head1 SYNOPSIS
 

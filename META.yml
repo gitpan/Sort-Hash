@@ -17,6 +17,9 @@ meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
   version: 1.4
 name: Sort-Hash
+no_index:
+  file:
+    - lib/Sort/Hash1.pm
 requires:
   Exporter: 0
   Scalar::Util: 1.24
@@ -24,4 +27,4 @@ requires:
   perl: 5.008
   strict: 0
   warnings: 0
-version: 2.03
+version: 2.04
