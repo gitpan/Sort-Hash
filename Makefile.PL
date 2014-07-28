@@ -10,7 +10,7 @@ use ExtUtils::MakeMaker 6.30;
 
 
 my %WriteMakefileArgs = (
-  "ABSTRACT" => "Sort the keys of a Hash into an Array without having to read the perldoc for sort!",
+  "ABSTRACT" => "Sort the keys of a Hash into an Array.",
   "AUTHOR" => "John Karr <brainbuz\@brainbuz.org>",
   "BUILD_REQUIRES" => {},
   "CONFIGURE_REQUIRES" => {
@@ -33,7 +33,7 @@ my %WriteMakefileArgs = (
     "Test::Warn" => 0,
     "Test::Warnings" => 0
   },
-  "VERSION" => "2.04",
+  "VERSION" => "2.05",
   "test" => {
     "TESTS" => "t/*.t"
   }

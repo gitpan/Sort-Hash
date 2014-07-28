@@ -72,7 +72,7 @@ my @IntegerHashExpect = (
 );
 is( "@IntegerHashResult", "@IntegerHashExpect",
     'Default (Asc) sort for %IntegerHash' );
-@IntegerHashResult = sort_hash( \%IntegerHash, 'desc' );
+@IntegerHashResult = sort_hash( 'desc', \%IntegerHash );
 @IntegerHashExpect = (
     qw/ gayness Emmett poses drive handcuffs murmurer Bela
         digitization walked Ceylon/
@@ -86,7 +86,7 @@ my @FloatHashExpect = (
 );
 my @FloatHashResult_Numeric = sort_hash( \%FloatHash );
 my @IntegerHashResult_Alpha = sort_hash( \%IntegerHash, 'alpha' );
-my @FloatHashResult_Alpha   = sort_hash( \%FloatHash, 'alpha' );
+my @FloatHashResult_Alpha   = sort_hash( 'alpha', \%FloatHash  );
 
 my @MixedHashExpect
     = (qw/removals treat Boarsh validating elks Jugoslavia Boone Calais/);

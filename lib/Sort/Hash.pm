@@ -3,64 +3,66 @@ use warnings FATAL => 'all';
 
 package Sort::Hash;
 {
-  $Sort::Hash::VERSION = '2.04';
+  $Sort::Hash::VERSION = '2.05';
 }
 use Exporter 'import';
 use Try::Tiny 0.13;
 use Scalar::Util 1.24;
+use 5.008;
 
 our @EXPORT = qw( sort_hash );    # symbols to export on request
 
-# ABSTRACT: Sort the keys of a Hash into an Array without having to read the perldoc for sort!
+# ABSTRACT: Sort the keys of a Hash into an Array.
 
 =pod
 
 =head1 NAME
 
-Sort::Hash - get the keys to a hashref sorted by their values
+Sort::Hash - get the keys to a hashref sorted by their values.
 
 =head1 VERSION
 
-version 2.04
+version 2.05
 
 =head1 SYNOPSIS
 
-Hash::Sort is just a convenience for returning the keys of a hashref
-sorted by their values. The hash may either be passed directly or
-as a hashref, numeric and alphanumeric sorting are supported, 
+Hash::Sort is a convenience for returning the keys of a hashref
+sorted by their values. Numeric and alphanumeric sorting are supported, 
 the sort may be either Ascending or Descending. 
 
   use Sort::Hash;
   my @sorted = sort_hash( \%Hash );
 
-This does exactly the same as: 
+This does exactly the same as:
 
  my @sorted = ( sort { $Hash{$a} <=> $Hash{$b} } keys %Hash ) ;
 
-=head1 DESCRIPTION 
+=head1 DESCRIPTION
 
-Sort the keys of a Hash into an Array without having to read the perldoc for sort! 
+Get the keys to a hashref sorted by their values. 
 
-=head2 sort_hash 
+=head1 Methods Exported
+
+=head2 sort_hash
 
 Return a sorted array containing the keys of a hash.
 
 =head3 Options to sort_hash
 
-    nofatal      warn and return an emppty list instead of dying on
-                 invalid sort
+    nofatal      warn and return an empty list instead of dying on
+                 invalid sort (default behaviour)
     silent       like nofatal but doesn't emit warnings either
     noempty      if the hashref is empty treat it as an error
-                 instead of returning an empty list ().
+                 instead of returning an empty list ()
     desc         sort descending instead of ascending
     asc          ascending sort is the default but you can specify it
     alpha        sort alpha (treats numbers as text)
     strictalpha  sort alpha but refuse to sort numbers as text
     numeric      sort as numbers, default is numeric
 
-The first argument is the hashref to be sorted, followed by the arguments which may be in any order.
+The arguments may be passed in any order.
 
- sort_hash( $hashref, 'strictalpha', 'desc' );
+ sort_hash( 'strictalpha', 'desc', $hashref );
  sort_hash( $hashref, qw/ noempty nofatal alpha desc /);
 
 =head2 Errors
@@ -75,7 +77,9 @@ Sorting an empty hashref will return nothing (). You can make this into an error
 
 =head1 Changes from Version 1.x to 2.x
 
-The API has been changed from version 1. When looking back at sort_hash I decided that I didn't like a number of things about it, I even ended up agreeing with a complaint from PerlCritic! 
+The API has been changed from version 1. It is no longer possible to pass a naked hash, and it is no longer necessary to enter parameters as key value pairs. The default has also been changed from nofatal (warn only) to fatal (die on illegal sort). 
+
+Upgrading to version 2. If you passed a naked hash just precede it with a backslash to pass it as a hashref. Add the parameter 'nofatal' to warn instead of die. Version 2 takes its arguments as an array and just ignores the extra arguments that would come in from a version 1 call. If you were already passing a hashref it will just work, except that illegal values are fatal without nofatal.
 
 =head2 If you need version1 compatibility
 
@@ -85,10 +89,12 @@ Version 1 is included in the version 2 distribution, renamed as Sort::Hash1, jus
 
 sub sort_hash {
     my @sorted = ();
-    my $H      = shift;
+#    my $H      = shift;
+    my $H = {}; # $H must be a hashref, others are ints.
     my ( $silent, $nofatal, $noempty, $desc, $alpha, $strictalpha ) = 0;
     my ( $numeric, $asc ) = 1;
     for (@_) {
+        if ( ref $_ eq 'HASH') { $H = $_ };
         if ( $_ eq 'nofatal' ) { $nofatal = 1 }
         if ( $_ eq 'silent' )  { $silent  = 1; $nofatal = 1 }
         if ( $_ eq 'noempty' ) { $noempty = 1 }
@@ -107,6 +113,8 @@ sub sort_hash {
         if ($nofatal) { warn $_[0] unless $silent; return (); }
         else          { die $_[0]; }
     };
+    # $H initialized at 0, but if a hash was provided
+    #if( $H == 0 ) { die 'No Hash was provided for sorting.'}
     if ($noempty) {
         unless ( scalar( keys %$H ) ) {
             $death->(

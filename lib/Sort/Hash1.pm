@@ -1,6 +1,6 @@
 package Sort::Hash1;
 {
-  $Sort::Hash1::VERSION = '2.04';
+  $Sort::Hash1::VERSION = '2.05';
 }
 use Exporter 'import';
 use Try::Tiny 0.13;

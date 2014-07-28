@@ -1,9 +1,9 @@
 
 
 This archive contains the distribution Sort-Hash,
-version 2.04:
+version 2.05:
 
-  Sort the keys of a Hash into an Array without having to read the perldoc for sort!
+  Sort the keys of a Hash into an Array.
 
 This software is Copyright (c) 2014 by John Karr.
 
